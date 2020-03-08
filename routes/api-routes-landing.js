@@ -8,28 +8,30 @@ module.exports = function (app) {
             .then(function (result) {
                 search = { symbols: result };
                 // loop query
-                console.log(search, "get from database ==================");
-                console.log(result, "result ===========")
-                console.log(search.symbols.length, "search.symbols.length =====================")
-                console.log(search.symbols.Stock, "search.symbols.stock ===============")
+                // console.log(search, "get from database ==================");
+                // console.log(result, "result ===========");
+                console.log(search.symbols.length, "search.symbols.length =====================");
+                console.log(result.length, "result.length ===============");
                 let queriesNews = [];
                 let queriesStocks = [];
-                console.log(result[0].Stock, "=================")
-                for (let Stock in result) (element => {
-                    console.log(this,"=========================")
-                    let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + this.dataValues.symbol + "&items=10&token=" + process.env.apiKeyStockNews;
+                console.log(result[0], "result[0]=================");
+                console.log(result[0].dataValues.symbol,"result[0].dataValues.symbol==============")
+
+                for (let i = 0; i < result.length; i++ ) {
+                    console.log("hello =========================")
+                    let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol + "&items=10&token=" + process.env.apiKeyStockNews;
                     fetch(queryURL_news)
                         .then((response) => {
                             console.log(response, "response news ===================");
                             queriesNews.push(response.json());
                         });
-                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + this.dataValues.symbol + "&apikey=" + process.env.apiKeyAlphaVantage1;
+                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol + "&apikey=" + process.env.apiKeyAlphaVantage1;
                     fetch(queryURL_stocks)
                         .then((response) => {
                             console.log(response, "response stocks ====================");
                             queriesStocks.push(response.json());
                         })
-                })
+                }
                 console.log(queriesStocks,"queries stocks api ============");
                 console.log(queriesNews,"queries news api ==============")
 
