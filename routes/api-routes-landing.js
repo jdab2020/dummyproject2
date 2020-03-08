@@ -14,15 +14,15 @@ module.exports = function (app) {
                 let queriesNews = [];
                 let queriesStocks = [];
 
-                for (let symbols in search) (element => {
-                    console.log(this.dataValues.symbol, "this.dataValues.symbol ===========")
-                    let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + this.dataValues.symbol + "&items=10&token=" + process.env.apiKeyStockNews;
+                Object.keys(search).forEach (element => {
+                    console.log(this.dataValues, "this.dataValues.symbol ===========")
+                    let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + this.dataValues + "&items=10&token=" + process.env.apiKeyStockNews;
                     fetch(queryURL_news)
                         .then((response) => {
                             console.log(response, "response news ===================");
                             queriesNews.push(response.json());
                         });
-                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + this.dataValues.symbol + "&apikey=" + process.env.apiKeyAlphaVantage1;
+                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + this.dataValues + "&apikey=" + process.env.apiKeyAlphaVantage1;
                     fetch(queryURL_stocks)
                         .then((response) => {
                             console.log(response, "response stocks ====================");
