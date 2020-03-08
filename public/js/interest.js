@@ -1,8 +1,9 @@
 $(document).ready(function (){
-    $(document).on("click","button.addSymbol",addSymbol);
+    $(document).on("click",".addSymbol",addSymbol);
 
     function addSymbol (event) {
-        let symbol = $(".addSymbol");
+        let symbol = $("#addSymbol");
+        // console.log(symbol.val().trim(), "smybol===========");
         $.ajax("/api/symbols", {
             method: "POST",
             data: {symbol: symbol.val().trim()}
@@ -10,4 +11,11 @@ $(document).ready(function (){
             location.reload();
         })
     }
+
+    // $("#addSymbol").on("click", (event) => {
+    //     let symbol = $("#addSymbol");
+    //     console.log(symbol.val().trim());
+
+    // })
+
 })
