@@ -21,28 +21,29 @@ module.exports = function (app) {
 
                 for (let i = 0; i < result.length; i++) {
                     
-                    let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=10&token=" + process.env.apiKeyStockNews;
+                    let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=3&token=" + process.env.apiKeyStockNews;
                     queriesNews.push(fetch(queryURL_news));
                     let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
                     queriesStocks.push(fetch(queryURL_stocks));
                 }
-
-                return Promise.all( queriesNews,queriesStocks );
-                // return Promise.all(queriesNews);
+         
+                return Promise.all(queriesNews);
                 // return Promise.all(queriesStocks);
-
-
             }).then(results => { 
                 results.forEach(result => {
                     result.json().then(json=> console.log(json))
+                    
+                }).then(results => { 
+                results.forEach(result => {
+                    result.json().then(json=> console.log(json))
                 })
+            })
 
                 // console.log(results)
 
                 // results.forEach(result => {
                 //     result.forEach(res => {
-                //         // res.json().then(json => console.log(json))
-                //         console.log(res.json(),"res=============")
+                //         res.json().then(json => console.log(json))
                 //     })
                 // })
             }).catch((err) => { if (err) throw err });
