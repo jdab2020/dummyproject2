@@ -22,7 +22,8 @@ module.exports = function (app) {
                 for (let i = 0; i < result.length; i++) {
                     console.log("hello =========================")
                     let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=10&token=" + process.env.apiKeyStockNews;
-                    queriesNews.push(fetch(queryURL_news).then(results => { results.json() }))
+                    queriesNews.push(fetch(queryURL_news));
+                    // .then(results => { results.json() })
                     // .then((response) => {
                     //     console.log(response, "response news ===================");
                     //     queriesNews.push(response.json());
@@ -42,7 +43,7 @@ module.exports = function (app) {
                 return Promise.all(queriesNews)
 
 
-            }).then(results => { console.log(results, "results=================") 
+            }).then(results => { console.log(results.json(), "results=================") 
             }).catch((err) => { if (err) throw err });
     });
     // posting into database works

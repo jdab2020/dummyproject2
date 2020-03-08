@@ -3,11 +3,10 @@ module.exports = function (sequelize, DataTypes) {
         symbol: {
             type: DataTypes.STRING,
             allowNull: false,
-            timestamps: false,
             validate: {
                 len: [1, 10]
             }
         }
-    });
+    }, {timestamps: false});
     return Stock;
 };
