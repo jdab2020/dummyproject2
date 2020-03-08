@@ -4,8 +4,8 @@ const fetch = require('node-fetch');
 module.exports = function (app) {
     let queriesNews = [];
     let queriesStocks = [];
-    let newsResults=[];
-    let stocksResults=[];
+    let newsResults = [];
+    let stocksResults = [];
 
     app.get("/", function (req, res) {
         db.Stock.findAll()
@@ -32,18 +32,24 @@ module.exports = function (app) {
             .then(results => {
                 results.forEach(result => {
                     result.json().then(json => stocksResults.push(json))
-                })               
+                    // console.log(stocksResults)
+                })
+            })
+            .then(results => {
+                let hbs = {
+                    stocks: stocksResults,
+                    news: newsResults
+                }
+                console.log(stocksResults,"====== stock ======");
+                console.log(newsResults,"==== news ========")
+
+                res.render("index", hbs);
             })
             .catch((err) => { if (err) throw err });
-       
-        let hbs = {
-            stocks: stocksResults,
-            news: newsResults
-        }
 
-        console.log(hbs);
-        
-        res.render("index",hbs);
+
+
+
 
 
     });
