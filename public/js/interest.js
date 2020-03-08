@@ -11,11 +11,4 @@ $(document).ready(function (){
             location.reload();
         })
     }
-
-    // $("#addSymbol").on("click", (event) => {
-    //     let symbol = $("#addSymbol");
-    //     console.log(symbol.val().trim());
-
-    // })
-
 })

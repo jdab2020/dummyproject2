@@ -20,30 +20,31 @@ module.exports = function (app) {
                 // console.log(result[0].dataValues.symbol,"result[0].dataValues.symbol==============")
 
                 for (let i = 0; i < result.length; i++) {
-                    console.log("hello =========================")
+                    
                     let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=10&token=" + process.env.apiKeyStockNews;
                     queriesNews.push(fetch(queryURL_news));
-                    // .then(results => { results.json() })
-                    // .then((response) => {
-                    //     console.log(response, "response news ===================");
-                    //     queriesNews.push(response.json());
-                    // }).catch((err)=>{if (err) throw err})
-                    // let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
-                    // queriesStocks.push(fetch(queryURL_stocks))
-                    // .then((response) => {
-                    //     console.log(response, "response stocks ====================");
-                    //     queriesStocks.push(response.json());
-                    // }).catch((err)=>{if (err) throw err})
+                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
+                    queriesStocks.push(fetch(queryURL_stocks));
                 }
-                // console.log(queriesStocks,"queries stocks api ============");
-                // console.log(queriesNews,"queries news api ==============")
 
-                // return Promise.all(queriesNews, queriesStocks);
-                // console.log(queriesNews,"queriesNews=========")
-                return Promise.all(queriesNews)
+                return Promise.all( queriesNews,queriesStocks );
+                // return Promise.all(queriesNews);
+                // return Promise.all(queriesStocks);
 
 
-            }).then(results => { console.log(results.json(), "results=================") 
+            }).then(results => { 
+                results.forEach(result => {
+                    result.json().then(json=> console.log(json))
+                })
+
+                // console.log(results)
+
+                // results.forEach(result => {
+                //     result.forEach(res => {
+                //         // res.json().then(json => console.log(json))
+                //         console.log(res.json(),"res=============")
+                //     })
+                // })
             }).catch((err) => { if (err) throw err });
     });
     // posting into database works
