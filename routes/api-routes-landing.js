@@ -2,51 +2,50 @@ const db = require("../models");
 const fetch = require('node-fetch');
 
 module.exports = function (app) {
-    let search;
+    let queriesNews = [];
+    let queriesStocks = [];
+    let newsResults=[];
+    let stocksResults=[];
 
     app.get("/", function (req, res) {
         db.Stock.findAll()
             // grab symbols from seed database
             .then(function (result) {
-                search = { symbols: result };
-                // loop query
-                // console.log(search, "get from database ==================");
-                // console.log(result, "result ===========");
-                // console.log(search.symbols.length, "search.symbols.length =====================");
-                // console.log(result.length, "result.length ===============");
-                let queriesNews = [];
-                let queriesStocks = [];
-                // console.log(result[0], "result[0]=================");
-                // console.log(result[0].dataValues.symbol,"result[0].dataValues.symbol==============")
-
                 for (let i = 0; i < result.length; i++) {
-                    
+
                     let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=3&token=" + process.env.apiKeyStockNews;
                     queriesNews.push(fetch(queryURL_news));
                     let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
                     queriesStocks.push(fetch(queryURL_stocks));
                 }
-         
+
                 return Promise.all(queriesNews);
-                // return Promise.all(queriesStocks);
-            }).then(results => { 
-                results.forEach(result => {
-                    result.json().then(json=> console.log(json))
-                    
-                }).then(results => { 
-                results.forEach(result => {
-                    result.json().then(json=> console.log(json))
-                })
             })
+            .then(results => {
+                results.forEach(result => {
+                    result.json().then(json => {
+                        newsResults.push(json);
+                    })
+                })
+                return Promise.all(queriesStocks)
+            })
+            .then(results => {
+                results.forEach(result => {
+                    result.json().then(json => stocksResults.push(json))
+                })               
+            })
+            .catch((err) => { if (err) throw err });
+       
+        let hbs = {
+            stocks: stocksResults,
+            news: newsResults
+        }
 
-                // console.log(results)
+        console.log(hbs);
+        
+        res.render("index",hbs);
 
-                // results.forEach(result => {
-                //     result.forEach(res => {
-                //         res.json().then(json => console.log(json))
-                //     })
-                // })
-            }).catch((err) => { if (err) throw err });
+
     });
     // posting into database works
     app.post("/api/symbols", function (req, res) {
