@@ -2,12 +2,14 @@ const db = require("../models");
 const fetch = require('node-fetch');
 
 module.exports = function (app) {
-    let queriesNews = [];
-    let queriesStocks = [];
-    let newsResults = [];
-    let stocksResults = [];
+
 
     app.get("/", function (req, res) {
+        let queriesNews = [];
+        let queriesStocks = [];
+        let newsResults = [];
+        let stocksResults = [];
+        
         db.Stock.findAll()
             // grab symbols from seed database
             .then(function (result) {
@@ -29,29 +31,23 @@ module.exports = function (app) {
                 })
                 return Promise.all(queriesStocks)
             })
-            .then(results => {
-                results.forEach(result => {
+            .then(async (results) => {
+                await results.forEach(result => {
                     result.json().then(json => stocksResults.push(json))
                     // console.log(stocksResults)
                 })
             })
             .then(results => {
-                let hbs = {
+                let hbsObj = {
                     stocks: stocksResults,
                     news: newsResults
                 }
-                console.log(stocksResults,"====== stock ======");
-                console.log(newsResults,"==== news ========")
+                console.log(stocksResults, "====== stock ======");
+                console.log(newsResults, "====== news ========")
 
-                res.render("index", hbs);
+                res.render("index", hbsObj);
             })
             .catch((err) => { if (err) throw err });
-
-
-
-
-
-
     });
     // posting into database works
     app.post("/api/symbols", function (req, res) {

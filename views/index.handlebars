@@ -46,21 +46,15 @@
             <div class="message-header has-text-weight-bold">
                 <h1 class="title has-text-white">News</h1>
             </div>
+            {{#each news}}
             <div class="message-body">
-                <h3 class="subtitle is-3">Headline 1</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.</p>
+                {{#each this.data}}
+                <img src ="{{this.image_url}}" width="75px" height="75px">
+                <h3 class="subtitle is-3">{{this.title}}</h3>
+                <p>{{this.text}}</p>
+                <p>{{this.news_url}}</p>
+                {{/each}}
             </div>
-            <!-- <div class="message-body">
-        <h3 class="title is-3">Headline 2</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      </div>
-      <div class="message-body">
-        <h3 class="title is-3">Headline 3</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      </div> -->
+            {{/each}}
         </article>
     </div>

@@ -3,7 +3,6 @@ $(document).ready(function (){
 
     function addSymbol (event) {
         let symbol = $("#addSymbol");
-        // console.log(symbol.val().trim(), "smybol===========");
         $.ajax("/api/symbols", {
             method: "POST",
             data: {symbol: symbol.val().trim()}
